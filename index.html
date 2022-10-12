@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/main.css" />
+    <title>Books shop</title>
+  </head>
+  <body onload="onInit()">
+    <section class="header">
+      <header><h1>Book shop</h1></header>
+    </section>
+    <section class="inputs-container">
+      <label>
+        Book name:
+        <input type="text" name="add-book" placeholder="Enter book name" />
+        Book price:
+        <input type="number" min="0" name="add-price" placeholder="Enter book price" />
+        <button class="addbook-btn" onclick="onAddBook()">Creat Book</button>
+      </label>
+
+      <label>
+        Sort By Max price:
+        <input
+          type="range"
+          name="price"
+          value="0"
+          onchange="this.title=this.value;onSetFilter({maxPrice: this.value})"
+        />
+      </label>
+      <label>
+        Sort By Min rate:
+        <input
+          type="range"
+          name="rate"
+          value="10"
+          max="10"
+          onchange="this.title=this.value;onSetFilter({minRate: this.value})"
+        />
+      </label>
+      <label>
+        <input
+          type="text"
+          name="search"
+          placeholder="Search by title..."
+          oninput="onSetFilterByName({name: this.value})"
+        />
+      </label>
+    </section>
+    <div class="pages-btns">
+      <button onclick="onPrevPage()">Previous Page</button>
+      <button onclick="onNextPage()">Next Page</button>
+    </div>
+    <button value="cards" onclick="displayChoise(this.value)" class="cards-btn">cards</button>
+    <button value="table" onclick="displayChoise(this.value)" class="table-btn">table</button>
+    <div class="cards-container">
+      
+    </div>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Price</th>
+            <th colspan="3">Actions</th>
+            <th>Rate</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="modal">
+      <img src="" alt="" />
+      <h3></h3>
+      <div></div>
+      <h4 class="book-description">Book Description</h4>
+      <p></p>
+      <button onclick="onCloseModal()">Close</button>
+    </div>
+    
+    <script src="js/util-service.js"></script>
+    <script src="js/storage-service.js"></script>
+    <script src="js/books-service.js"></script>
+    <script src="js/books-controller.js"></script>
+  </body>
+</html>
