@@ -58,11 +58,8 @@ function nextPage(diff) {
   if ((gPageIdx + diff) * PAGE_SIZE >= gBooks.length) return
   if (gPageIdx === 0 && diff === -1) return
   diff === 1 ? gPageIdx++ : gPageIdx--
+  return gPageIdx
 }
-
-// function prevPage() {
-//   gPageIdx--
-// }
 
 function removeBook(bookId) {
   const book_Idx = gBooks.findIndex((book) => book.id === bookId)

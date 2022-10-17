@@ -141,7 +141,16 @@ function onSetFilterByName(bookName) {
 }
 
 function onChangePage(diff) {
-  nextPage(diff)
+  debugger
+  if (gCurrPageEl) gCurrPageEl.classList.remove('pages-btns')
+  var currIdx = nextPage(diff)
+  var elPage = document.querySelectorAll('.page-item')
+  elPage.forEach((el) => {
+    if (el.value === currIdx) {
+      el.classList.add('pages-btns')
+      gCurrPageEl = el
+    }
+  })
   renderBooks()
   doTrans()
 }

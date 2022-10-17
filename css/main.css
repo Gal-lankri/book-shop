@@ -100,8 +100,8 @@ background-color: darkgrey;
   padding: 10px ;
   position: fixed ;
   top: 0px ;
-  left: 150% ;
-  height: 80% ;
+  left: 150vw ;
+  height: 80vh ;
   min-width: 300px ;
   text-align: center ;
 }
@@ -114,15 +114,26 @@ background-color: darkgrey;
   align-items: center;
   border: 1px solid black;
 }
-.modal-card button {
-  background-color: darkgrey;
-  color: rgb(0, 0, 0);
-  border: 1px solid black;
-  border-radius: 2px;
-}
+
 .modal-card.open {
-  left: 80%;
+  left: 80vw;
   transition: left 0.8s;
+  z-index: 30;
+}
+@media screen and (max-width: 1000px) {
+    .modal-card.open {
+      left: 70vw;
+    }
+  }
+@media screen and (max-width: 992px) and (min-width: 700px) {
+    .modal-card.open {
+      left: 60vw;
+    }
+}
+@media screen and (max-width: 750px) {
+    .modal-card.open {
+      left: 50vw;
+    }
 }
 .modal-card img {
   width: 150px;
