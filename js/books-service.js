@@ -1,28 +1,28 @@
-"use strict"
-const STORAGE_KEY = "bookDB"
+'use strict'
+const STORAGE_KEY = 'bookDB'
 var gBooks
-const PAGE_SIZE = 4
+const PAGE_SIZE = 6
 var gPageIdx = 0
 var gFilterBy = {
   maxPrice: Infinity,
   minRate: 0,
-  name: "",
+  name: '',
 }
 const gFirst_Books = [
-  { name: "Jungle Book", price: 65 },
-  { name: "Lion King", price: 150 },
-  { name: "Rapunzel", price: 50 },
-  { name: "Harry Poter", price: 100 },
+  { name: 'Jungle Book', price: 65 },
+  { name: 'Lion King', price: 150 },
+  { name: 'Rapunzel', price: 50 },
+  { name: 'Harry Potter', price: 100 },
 ]
 
 _creatBooks()
 
-function _creatBook(name = "Rapunzel", price = 100) {
+function _creatBook(name = 'Rapunzel', price = 100) {
   return {
     id: makeId(),
     name,
     price,
-    imgUrl: "https://www.clipartqueen.com/image-files/orange-book-clipart.png",
+    imgUrl: 'https://www.clipartqueen.com/image-files/orange-book-clipart.png',
     rate: 0,
   }
 }
@@ -40,28 +40,29 @@ function _creatBooks() {
 }
 
 function getBooks() {
-  var books = gBooks.filter(
-    (book) => book.price <= gFilterBy.maxPrice && book.rate >= gFilterBy.minRate
-  )
-  books.sort((book1, book2) => book1.price - book2.price)
+  var books = gBooks.filter((book) => book.price <= gFilterBy.maxPrice && book.rate >= gFilterBy.minRate)
 
   const startIdx = gPageIdx * PAGE_SIZE
   books = books.slice(startIdx, startIdx + PAGE_SIZE)
 
-  if (gFilterBy.name)
-    books = gBooks.filter((book) => book.name.toLowerCase().includes(gFilterBy.name.toLowerCase()))
+  if (gFilterBy.name) books = gBooks.filter((book) => book.name.toLowerCase().includes(gFilterBy.name.toLowerCase()))
   return books
 }
 
-function nextPage() {
-  if ((gPageIdx + 1) * PAGE_SIZE >= gBooks.length) return
-  gPageIdx++
+function pageByNum(pageIdx) {
+  if (pageIdx * PAGE_SIZE >= gBooks.length) return null
+  gPageIdx = pageIdx
 }
 
-function prevPage() {
-  if (gPageIdx === 0) return
-  gPageIdx--
+function nextPage(diff) {
+  if ((gPageIdx + diff) * PAGE_SIZE >= gBooks.length) return
+  if (gPageIdx === 0 && diff === -1) return
+  diff === 1 ? gPageIdx++ : gPageIdx--
 }
+
+// function prevPage() {
+//   gPageIdx--
+// }
 
 function removeBook(bookId) {
   const book_Idx = gBooks.findIndex((book) => book.id === bookId)
@@ -94,6 +95,11 @@ function setBooksFilter(filterBy) {
   if (filterBy.maxPrice !== undefined) gFilterBy.maxPrice = filterBy.maxPrice
   if (filterBy.minRate !== undefined) gFilterBy.minRate = filterBy.minRate
   return gFilterBy
+}
+
+function setSortBy(sortBy) {
+  if (sortBy === 'Price') gBooks.sort((book1, book2) => book1.price - book2.price)
+  else gBooks.sort((book1, book2) => book1.name.localeCompare(book2.name, gCurrLang))
 }
 
 function getMaxPrice() {

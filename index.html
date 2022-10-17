@@ -1,86 +1,162 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
+<html id="top" lang="en">
+  <head >
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+      crossorigin="anonymous"
+    />
     <link rel="stylesheet" href="css/main.css" />
     <title>Books shop</title>
   </head>
-  <body onload="onInit()">
-    <section class="header">
-      <header><h1>Book shop</h1></header>
-    </section>
-    <section class="inputs-container">
-      <label>
-        Book name:
-        <input type="text" name="add-book" placeholder="Enter book name" />
-        Book price:
-        <input type="number" min="0" name="add-price" placeholder="Enter book price" />
-        <button class="addbook-btn" onclick="onAddBook()">Creat Book</button>
-      </label>
+  <body  onload="onInit()">
+    <header >
+      <h1  data-trans="title">Book shop</h1>
+      <img class="header-img" src="images/books-header.gif" alt="books-img" />
+    </header>
+    <nav class="navbar navbar-expand-lg fixed-top" style="background-color: #8a25ceb7">
+      <div class="container-fluid nav-container">
+        <a class="navbar-brand" href="#top" style="color:#fff" data-trans="navbar">Books</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <select class="lang nav-link" onchange="onSetLang(this.value)" name="lang" id="lang">
+                <option>Select language</option>
+                <option value="en">English</option>
+                <option value="he">Hebrew</option>
+              </select>
+            </li>
+            <div class="container-fluid justify-content-start">
+              <button  data-bs-toggle="modal" data-bs-target="#add-book-modal" class="btn btn-sucsses addbook-btn" data-trans="add-btn" style="color:#fff">
+                Creat Book
+              </button>
+            </div>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" data-trans="sort-by" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color:#fff"> Sort By </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <label class="dropdown-item" for="price" data-trans="filter-price">Max price:</label>
+                  <input type="range" name="price" value="0" onchange="this.title=this.value;onSetFilter({maxPrice: this.value})" />
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <label class="dropdown-item" for="rate" data-trans="filter-rate"> Min rate: </label>
+                  <input type="range" name="rate" value="10" max="10" onchange="this.title=this.value;onSetFilter({minRate: this.value})" />
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <div class="container-fluid justify-content-start">
+              <button class="btn cards-btn" value="cards" onclick="changeDisplay(this, this.value)" style="color:#fff"><img src="https://img.icons8.com/windows/32/000000/four-squares.png"/></button>
+            </div>
+            </li>
+            <li class="nav-item">
+              <div class="container-fluid justify-content-start">
+              <button class="btn table-btn" value="table" onclick="changeDisplay(this, this.value)" style="color:#fff"><img src="https://img.icons8.com/windows/32/000000/table-1.png"/></button>
+            </div>
+              </li>
+          </ul>
+          <form class="d-flex" role="search">
+            <input class="form-control me-2" type="search" name="search" placeholder="🔍" oninput="onSetFilterByName({name: this.value})" />
+          </form>
+        </div>
+      </div>
+    </nav>
 
-      <label>
-        Sort By Max price:
-        <input
-          type="range"
-          name="price"
-          value="0"
-          onchange="this.title=this.value;onSetFilter({maxPrice: this.value})"
-        />
-      </label>
-      <label>
-        Sort By Min rate:
-        <input
-          type="range"
-          name="rate"
-          value="10"
-          max="10"
-          onchange="this.title=this.value;onSetFilter({minRate: this.value})"
-        />
-      </label>
-      <label>
-        <input
-          type="text"
-          name="search"
-          placeholder="Search by title..."
-          oninput="onSetFilterByName({name: this.value})"
-        />
-      </label>
-    </section>
-    <div class="pages-btns">
-      <button onclick="onPrevPage()">Previous Page</button>
-      <button onclick="onNextPage()">Next Page</button>
+    <section class="container-fluid top-container"></section>
+
+    <div class="modal fade" id="add-book-modal" tabindex="-1" aria-labelledby="examplemodallabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="add-book-modal-lable" data-trans="add-btn">Add Book</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <label for="add-book" data-trans="book-name"> Book name:</label>
+            <input type="text" name="add-book" data-trans="enter-name" placeholder="Enter book name" />
+
+            <label for="add-price" data-trans="book-price"> Book price: </label>
+            <input type="number" min="0" name="add-price" data-trans="enter-price" placeholder="Enter book price" />
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-trans="close-modal" data-bs-dismiss="modal">Close</button>
+            <button type="button" onclick="onAddBook()" data-trans="change-book" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
     </div>
-<!--     <button value="cards" onclick="displayChoise(this.value)" class="cards-btn">cards</button>
-    <button value="table" onclick="displayChoise(this.value)" class="table-btn">table</button> -->
-    <div class="cards-container">
-      
-    </div>
-    <div class="table-container">
-      <table>
-        <thead>
+
+
+
+
+    <div class="cards-container"></div>
+
+    <section class="inputs-container container"></section>
+    <div class="table-container table-responsive">
+      <table class="table table-info table-striped table-sm">
+        <thead class="table-dark">
           <tr>
-            <th>ID</th>
-            <th>Title</th>
-            <th>Price</th>
-            <th colspan="3">Actions</th>
-            <th>Rate</th>
+            <th data-trans="book-id">ID</th>
+            <th data-trans="book-name" onclick="onSortBy(this.innerText)">Title</th>
+            <th data-trans="book-price" onclick="onSortBy(this.innerText)">Price</th>
+            <th data-trans="book-actions" colspan="3">Actions</th>
+            <th data-trans="book-rate">Rate</th>
           </tr>
         </thead>
         <tbody></tbody>
       </table>
     </div>
-    <div class="modal">
+    
+    <nav aria-label="Page navigation">
+      <ul class="pagination justify-content-center">
+        <li class="page-item">
+          <a class="page-link" aria-label="Previous" onclick="onChangePage(-1)" style="color: rgb(0, 0, 0)">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li class="page-item page-link" value="0" onclick="onPageByNum(this, this.value)" style="color: rgb(0, 0, 0)">1</li>
+        <li class="page-item page-link" value="1" onclick="onPageByNum(this, this.value)" style="color: rgb(0, 0, 0)">2</li>
+        <li class="page-item page-link" value="2" onclick="onPageByNum(this, this.value)" style="color: rgb(0, 0, 0)">3</li>
+        <li class="page-item">
+          <a class="page-link" aria-label="Next" onclick="onChangePage(1)" style="color: rgb(0, 0, 0)">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <div class="modal-card opacity-75">
       <img src="" alt="" />
       <h3></h3>
       <div></div>
       <h4 class="book-description">Book Description</h4>
       <p></p>
-      <button onclick="onCloseModal()">Close</button>
+      <button class="btn btn-dark" onclick="onCloseModal()">Close</button>
     </div>
-    
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+      crossorigin="anonymous"
+    ></script>
     <script src="js/util-service.js"></script>
+    <script src="js/i18n.service.js"></script>
     <script src="js/storage-service.js"></script>
     <script src="js/books-service.js"></script>
     <script src="js/books-controller.js"></script>
