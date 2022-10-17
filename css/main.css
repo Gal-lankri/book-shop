@@ -132,7 +132,7 @@ background-color: darkgrey;
 }
 @media screen and (max-width: 750px) {
     .modal-card.open {
-      left: 50vw;
+      left: 35vw;
     }
 }
 .modal-card img {
