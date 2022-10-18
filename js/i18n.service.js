@@ -117,7 +117,7 @@ function formatNum(num) {
 }
 
 function formatCurrency(num, currency) {
-  if (currency === 'ILS') num /= 3.55
+  if (currency === 'ILS') num *= 3.55
   return new Intl.NumberFormat(gCurrLang, { style: 'currency', currency: currency }).format(num)
 }
 
